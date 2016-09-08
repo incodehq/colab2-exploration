@@ -31,7 +31,7 @@ public class HomePageViewModel {
 
     //region > title
     public TranslatableString title() {
-        return TranslatableString.tr("{num} objects", "num", getObjects().size());
+        return TranslatableString.tr("{num} segments", "num", getObjects().size());
     }
     //endregion
 

@@ -97,12 +97,12 @@ public class Segment implements Comparable<Segment> {
 
     @Programmatic
     public ElementSpec elementBefore(final ElementSpec elementSpec) {
-        return findFirstWithinElse(getElements(), x -> x.getPosition() < elementSpec.getPosition(), elementSpec);
+        return findFirstWithinElse(reversed(getElements()), x -> x.getPosition() < elementSpec.getPosition(), elementSpec);
     }
 
     @Programmatic
     public ElementSpec elementAfter(final ElementSpec elementSpec) {
-        return findFirstWithinElse(reversed(getElements()), x -> x.getPosition() > elementSpec.getPosition(), elementSpec);
+        return findFirstWithinElse(getElements(), x -> x.getPosition() > elementSpec.getPosition(), elementSpec);
     }
 
     protected List<ElementSpec> reversed(final SortedSet<ElementSpec> elements1) {

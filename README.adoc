@@ -1,4 +1,4 @@
-= pp-exploration
+= colab2-exploration
 
 :_imagesdir: ./
 
