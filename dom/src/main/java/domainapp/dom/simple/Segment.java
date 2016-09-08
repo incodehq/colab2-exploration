@@ -81,7 +81,7 @@ public class Segment implements Comparable<Segment> {
     @lombok.Getter @lombok.Setter
     private String segmentId;
 
-    @Persistent(mappedBy = "segment", dependentElement = "true")
+    @Persistent(mappedBy = "segment", dependentElement = "false")
     @Collection()
     @Getter @Setter
     private SortedSet<ElementSpec> elements = new TreeSet<ElementSpec>();

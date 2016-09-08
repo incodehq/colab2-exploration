@@ -41,16 +41,16 @@ import lombok.Setter;
 )
 @javax.jdo.annotations.DatastoreIdentity(
         strategy=javax.jdo.annotations.IdGeneratorStrategy.IDENTITY,
-         column="segmentId")
+         column="id")
 @javax.jdo.annotations.Version(
         strategy= VersionStrategy.DATE_TIME,
         column="version")
 @javax.jdo.annotations.Queries({
-        @javax.jdo.annotations.Query(
-                name = "findBySegmentId", language = "JDOQL",
-                value = "SELECT "
-                        + "FROM domainapp.dom.simple.ElementSpec "
-                        + "WHERE name.indexOf(:name) >= 0 ")
+//        @javax.jdo.annotations.Query(
+//                name = "findBySegmentAndPosition", language = "JDOQL",
+//                value = "SELECT "
+//                        + "FROM domainapp.dom.simple.ElementSpec "
+//                        + "WHERE segment == :segment && position == :position")
 })
 @javax.jdo.annotations.Unique(name="ElementSpec_segment_position_UNQ", members = {"segment", "position"})
 @DomainObject(
