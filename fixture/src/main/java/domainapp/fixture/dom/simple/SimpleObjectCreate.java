@@ -21,8 +21,8 @@ package domainapp.fixture.dom.simple;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
-import domainapp.dom.simple.SimpleObject;
-import domainapp.dom.simple.SimpleObjectMenu;
+import domainapp.dom.simple.Segment;
+import domainapp.dom.simple.SegmentMenu;
 
 public class SimpleObjectCreate extends FixtureScript {
 
@@ -42,15 +42,15 @@ public class SimpleObjectCreate extends FixtureScript {
     //endregion
 
 
-    //region > simpleObject (output)
-    private SimpleObject simpleObject;
+    //region > segment (output)
+    private Segment segment;
 
     /**
      * The created simple object (output).
      * @return
      */
-    public SimpleObject getSimpleObject() {
-        return simpleObject;
+    public Segment getSegment() {
+        return segment;
     }
     //endregion
 
@@ -59,13 +59,13 @@ public class SimpleObjectCreate extends FixtureScript {
 
         String name = checkParam("name", ec, String.class);
 
-        this.simpleObject = wrap(simpleObjectMenu).create(name);
+        this.segment = wrap(segmentMenu).create(name);
 
         // also make available to UI
-        ec.addResult(this, simpleObject);
+        ec.addResult(this, segment);
     }
 
     @javax.inject.Inject
-    private SimpleObjectMenu simpleObjectMenu;
+    private SegmentMenu segmentMenu;
 
 }

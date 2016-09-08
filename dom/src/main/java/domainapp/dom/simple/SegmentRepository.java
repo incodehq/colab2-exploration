@@ -28,24 +28,24 @@ import org.apache.isis.applib.services.repository.RepositoryService;
 
 @DomainService(
         nature = NatureOfService.DOMAIN,
-        repositoryFor = SimpleObject.class
+        repositoryFor = Segment.class
 )
-public class SimpleObjectRepository {
+public class SegmentRepository {
 
-    public List<SimpleObject> listAll() {
-        return repositoryService.allInstances(SimpleObject.class);
+    public List<Segment> listAll() {
+        return repositoryService.allInstances(Segment.class);
     }
 
-    public List<SimpleObject> findByName(final String name) {
+    public List<Segment> findBySegmentId(final String segmentId) {
         return repositoryService.allMatches(
                 new QueryDefault<>(
-                        SimpleObject.class,
-                        "findByName",
-                        "name", name));
+                        Segment.class,
+                        "findBySegmentId",
+                        "segmentId", segmentId));
     }
 
-    public SimpleObject create(final String name) {
-        final SimpleObject object = new SimpleObject(name);
+    public Segment create(final String id) {
+        final Segment object = new Segment(id);
         serviceRegistry.injectServicesInto(object);
         repositoryService.persist(object);
         return object;

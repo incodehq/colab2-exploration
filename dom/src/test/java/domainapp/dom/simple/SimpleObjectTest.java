@@ -17,33 +17,30 @@
 package domainapp.dom.simple;
 
 import org.junit.Before;
-import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class SimpleObjectTest {
 
-    SimpleObject simpleObject;
+    Segment segment;
 
     @Before
     public void setUp() throws Exception {
-        simpleObject = new SimpleObject(null);
+        segment = new Segment(null);
     }
 
-    public static class Name extends SimpleObjectTest {
-
-        @Test
-        public void happyCase() throws Exception {
-            // given
-            String name = "Foobar";
-            assertThat(simpleObject.getName()).isNull();
-
-            // when
-            simpleObject.setName(name);
-
-            // then
-            assertThat(simpleObject.getName()).isEqualTo(name);
-        }
-    }
+//    public static class Name extends SimpleObjectTest {
+//
+//        @Test
+//        public void happyCase() throws Exception {
+//            // given
+//            String name = "Foobar";
+//            assertThat(segment.getName()).isNull();
+//
+//            // when
+//            segment.setName(name);
+//
+//            // then
+//            assertThat(segment.getName()).isEqualTo(name);
+//        }
+//    }
 
 }

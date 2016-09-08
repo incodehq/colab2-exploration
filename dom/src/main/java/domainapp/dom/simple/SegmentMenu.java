@@ -33,45 +33,45 @@ import org.apache.isis.applib.services.eventbus.ActionDomainEvent;
 
 @DomainService(
         nature = NatureOfService.VIEW_MENU_ONLY,
-        repositoryFor = SimpleObject.class
+        repositoryFor = Segment.class
 )
 @DomainServiceLayout(
-        named = "Simple Objects",
+        named = "Sewer Segments",
         menuOrder = "10"
 )
-public class SimpleObjectMenu {
+public class SegmentMenu {
 
 
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     @MemberOrder(sequence = "1")
-    public List<SimpleObject> listAll() {
-        return simpleObjectRepository.listAll();
+    public List<Segment> listAll() {
+        return segmentRepository.listAll();
     }
 
 
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     @MemberOrder(sequence = "2")
-    public List<SimpleObject> findByName(
+    public List<Segment> findByName(
             @ParameterLayout(named="Name")
             final String name
     ) {
-        return simpleObjectRepository.findByName(name);
+        return segmentRepository.findBySegmentId(name);
     }
 
 
-    public static class CreateDomainEvent extends ActionDomainEvent<SimpleObjectMenu> {}
+    public static class CreateDomainEvent extends ActionDomainEvent<SegmentMenu> {}
     @Action(domainEvent = CreateDomainEvent.class)
     @MemberOrder(sequence = "3")
-    public SimpleObject create(
+    public Segment create(
             @ParameterLayout(named="Name")
             final String name) {
-        return simpleObjectRepository.create(name);
+        return segmentRepository.create(name);
     }
 
 
     @javax.inject.Inject
-    SimpleObjectRepository simpleObjectRepository;
+    SegmentRepository segmentRepository;
 
 }

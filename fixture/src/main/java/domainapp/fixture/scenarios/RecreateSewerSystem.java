@@ -16,36 +16,44 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package domainapp.app.services.homepage;
 
-import java.util.List;
+package domainapp.fixture.scenarios;
 
-import org.apache.isis.applib.annotation.ViewModel;
-import org.apache.isis.applib.services.i18n.TranslatableString;
+import javax.inject.Inject;
+
+import org.apache.isis.applib.fixturescripts.FixtureScript;
 
 import domainapp.dom.simple.Segment;
 import domainapp.dom.simple.SegmentRepository;
 
-@ViewModel
-public class HomePageViewModel {
+public class RecreateSewerSystem extends FixtureScript {
 
-    //region > title
-    public TranslatableString title() {
-        return TranslatableString.tr("{num} objects", "num", getObjects().size());
+    public RecreateSewerSystem() {
+        withDiscoverability(Discoverability.DISCOVERABLE);
     }
-    //endregion
 
-    //region > object (collection)
-    @org.apache.isis.applib.annotation.HomePage
-    public List<Segment> getObjects() {
-        return segmentRepository.listAll();
+
+    @Override
+    protected void execute(final ExecutionContext ec) {
+
+        final Segment oxfStreetSeg = segmentRepository.create("Oxford Street");
+        final Segment highStreetSeg = segmentRepository.create("High Street");
+        final Segment railwayRoadSeg = segmentRepository.create("Railway Road");
+
+        createSegments(oxfStreetSeg, 5);
+        createSegments(highStreetSeg, 3);
+        createSegments(railwayRoadSeg, 10);
+
     }
-    //endregion
 
-    //region > injected services
+    private void createSegments(final Segment seg, final int num) {
+        for (int i = 0; i < num; i++) {
+            seg.createSpec(i);
+        }
+    }
 
-    @javax.inject.Inject
+    @Inject
     SegmentRepository segmentRepository;
 
-    //endregion
+
 }
