@@ -55,8 +55,7 @@ import lombok.Setter;
 @javax.jdo.annotations.Unique(name="ProductionStep_name_UNQ", members = {"name"})
 @DomainObject(
         publishing = Publishing.ENABLED,
-        auditing = Auditing.ENABLED,
-        bounded = true
+        auditing = Auditing.ENABLED
 )
 public class ProductionStep implements Comparable<ProductionStep> {
 

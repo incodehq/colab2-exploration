@@ -3,6 +3,8 @@
     <bs3:row>
         <bs3:col span="12" unreferencedActions="true">
             <cpt:domainObject/>
+            <cpt:action id="previous"/>
+            <cpt:action id="next"/>
         </bs3:col>
     </bs3:row>
     <bs3:row>
@@ -12,6 +14,7 @@
                     <bs3:row>
                         <bs3:col span="12">
                             <cpt:fieldSet name="Identifier">
+
                                 <cpt:property id="segment"/>
                                 <cpt:property id="position"/>
                             </cpt:fieldSet>

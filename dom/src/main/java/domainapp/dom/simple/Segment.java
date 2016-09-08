@@ -32,6 +32,7 @@ import org.apache.isis.applib.annotation.Collection;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.services.i18n.TranslatableString;
@@ -88,6 +89,19 @@ public class Segment implements Comparable<Segment> {
     @Collection()
     @Getter @Setter
     private SortedSet<ElementSpec> elements = new TreeSet<ElementSpec>();
+
+    @Programmatic
+    public ElementSpec elementAfter(final int position) {
+        final SortedSet<ElementSpec> elements = getElements();
+        return getElements().stream().filter(x -> x.getPosition() > position).findFirst().orElse(null);
+    }
+
+    @Programmatic
+    public ElementSpec elementBefore(final int position) {
+        final SortedSet<ElementSpec> elements = getElements();
+        return getElements().stream().filter(x -> x.getPosition() < position).findFirst().orElse(null);
+    }
+
 
 
     @Action

@@ -29,12 +29,14 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Join;
 import javax.jdo.annotations.VersionStrategy;
 
+import com.google.common.collect.Lists;
+
 import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.Auditing;
 import org.apache.isis.applib.annotation.Collection;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Publishing;
@@ -100,18 +102,49 @@ public class ElementSpec implements Comparable<ElementSpec> {
     @Getter @Setter
     private SortedSet<ProductionStep> steps = new TreeSet<ProductionStep>();
 
-    @Programmatic
-    public void associateBasicSteps() {
+    @Action
+    @MemberOrder(name = "steps", sequence = "1")
+    public ElementSpec associateBasicSteps() {
         final List<ProductionStep> steps = productionStepRepository.findByType(ProductionStepType.BASIC);
         getSteps().addAll(steps);
+        return this;
     }
 
     @Action
-    @MemberOrder(name = "steps", sequence = "1")
-    public void associateStep(final ProductionStep step) {
+    @ActionLayout(named = "Add")
+    @MemberOrder(name = "steps", sequence = "2")
+    public ElementSpec addStep(final ProductionStep step) {
         getSteps().add(step);
+        return this;
     }
 
+    public List<ProductionStep> choices0AddStep() {
+        final List<ProductionStep> steps = Lists.newArrayList(productionStepRepository.listAll());
+        steps.removeAll(getSteps());
+        return steps;
+    }
+
+    @Action
+    @ActionLayout(named = "Remove")
+    @MemberOrder(name = "steps", sequence = "3")
+    public ElementSpec removeStep(final ProductionStep step) {
+        getSteps().add(step);
+        return this;
+    }
+
+    public List<ProductionStep> choices0RemoveStep() {
+        return Lists.newArrayList(getSteps());
+    }
+
+    @Action()
+    public ElementSpec next() {
+        return getSegment().elementAfter(getPosition());
+    }
+
+    @Action()
+    public ElementSpec previous() {
+        return getSegment().elementBefore(getPosition());
+    }
 
     @Column(allowsNull = "true")
     @Property()
@@ -146,5 +179,6 @@ public class ElementSpec implements Comparable<ElementSpec> {
 
     @Inject
     ProductionStepRepository productionStepRepository;
+
 
 }

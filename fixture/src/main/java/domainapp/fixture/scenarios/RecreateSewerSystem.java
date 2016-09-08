@@ -65,12 +65,12 @@ public class RecreateSewerSystem extends FixtureScript {
         productionStepRepository.create("Quality check", ProductionStepType.BASIC, sequence = 999);
 
         elementSpecs.get(0).associateBasicSteps();
-        elementSpecs.get(0).associateStep(legStep);
+        elementSpecs.get(0).addStep(legStep);
 
         elementSpecs.get(1).associateBasicSteps();
 
-        elementSpecs.get(1).associateStep(entryPointStep);
-        elementSpecs.get(1).associateStep(ladderStep);
+        elementSpecs.get(1).addStep(entryPointStep);
+        elementSpecs.get(1).addStep(ladderStep);
 
 
     }
