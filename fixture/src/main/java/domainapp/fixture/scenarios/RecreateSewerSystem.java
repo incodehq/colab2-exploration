@@ -28,8 +28,8 @@ import com.google.common.collect.Lists;
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
 import domainapp.dom.simple.ElementSpec;
-import domainapp.dom.simple.ProductionStep;
-import domainapp.dom.simple.ProductionStepRepository;
+import domainapp.dom.simple.ProductionStepSpec;
+import domainapp.dom.simple.ProductionStepSpecRepository;
 import domainapp.dom.simple.ProductionStepType;
 import domainapp.dom.simple.Segment;
 import domainapp.dom.simple.SegmentRepository;
@@ -53,16 +53,18 @@ public class RecreateSewerSystem extends FixtureScript {
         createSpecs(railwayRoadSeg, 10);
 
         int sequence = 0;
-        productionStepRepository.create("Setup Form", ProductionStepType.BASIC, sequence++);
-        productionStepRepository.create("Reinforcements", ProductionStepType.BASIC, sequence++);
-        productionStepRepository.create("Pour the concrete", ProductionStepType.BASIC, sequence++);
+        productionStepSpecRepository.create("Setup Form", ProductionStepType.BASIC, sequence++);
+        productionStepSpecRepository.create("Reinforcements", ProductionStepType.BASIC, sequence++);
+        productionStepSpecRepository.create("Pour the concrete", ProductionStepType.BASIC, sequence++);
 
-        final ProductionStep legStep = productionStepRepository.create("Legs", ProductionStepType.EXTRA, sequence++);
-        final ProductionStep entryPointStep = productionStepRepository.create("Entry point", ProductionStepType.EXTRA,
+        final ProductionStepSpec legStep = productionStepSpecRepository
+                .create("Legs", ProductionStepType.EXTRA, sequence++);
+        final ProductionStepSpec entryPointStep = productionStepSpecRepository.create("Entry point", ProductionStepType.EXTRA,
                 sequence++);
-        final ProductionStep ladderStep = productionStepRepository.create("Ladder", ProductionStepType.EXTRA, sequence++);
+        final ProductionStepSpec ladderStep = productionStepSpecRepository
+                .create("Ladder", ProductionStepType.EXTRA, sequence++);
 
-        productionStepRepository.create("Quality check", ProductionStepType.BASIC, sequence = 999);
+        productionStepSpecRepository.create("Quality check", ProductionStepType.BASIC, sequence = 999);
 
         elementSpecs.get(0).associateBasicSteps();
         elementSpecs.get(0).addStep(legStep);
@@ -86,6 +88,6 @@ public class RecreateSewerSystem extends FixtureScript {
     SegmentRepository segmentRepository;
 
     @Inject
-    ProductionStepRepository productionStepRepository;
+    ProductionStepSpecRepository productionStepSpecRepository;
 
 }

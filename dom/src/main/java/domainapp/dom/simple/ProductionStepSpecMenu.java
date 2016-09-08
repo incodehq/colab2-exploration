@@ -36,19 +36,19 @@ import org.apache.isis.applib.annotation.SemanticsOf;
         named = "Production Steps",
         menuOrder = "20"
 )
-public class ProductionStepMenu {
+public class ProductionStepSpecMenu {
 
 
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     @MemberOrder(sequence = "1")
-    public List<ProductionStep> listAll() {
-        return productionStepRepository.listAll();
+    public List<ProductionStepSpec> listAll() {
+        return productionStepSpecRepository.listAll();
     }
 
 
 
     @javax.inject.Inject
-    ProductionStepRepository productionStepRepository;
+    ProductionStepSpecRepository productionStepSpecRepository;
 
 }

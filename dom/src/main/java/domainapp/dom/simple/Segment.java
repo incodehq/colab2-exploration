@@ -20,11 +20,14 @@ package domainapp.dom.simple;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.Predicate;
 
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
+
+import com.google.common.collect.FluentIterable;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.Auditing;
@@ -88,21 +91,23 @@ public class Segment implements Comparable<Segment> {
     @Persistent(mappedBy = "segment", dependentElement = "false")
     @Collection()
     @Getter @Setter
-    private SortedSet<ElementSpec> elements = new TreeSet<ElementSpec>();
+    private SortedSet<ElementSpec> elements = new TreeSet<>();
 
     @Programmatic
-    public ElementSpec elementAfter(final int position) {
-        final SortedSet<ElementSpec> elements = getElements();
-        return getElements().stream().filter(x -> x.getPosition() > position).findFirst().orElse(null);
+    public ElementSpec elementBefore(final ElementSpec position) {
+        return findElement(position, x -> x.getPosition() < position.getPosition());
     }
 
     @Programmatic
-    public ElementSpec elementBefore(final int position) {
-        final SortedSet<ElementSpec> elements = getElements();
-        return getElements().stream().filter(x -> x.getPosition() < position).findFirst().orElse(null);
+    public ElementSpec elementAfter(final ElementSpec position) {
+        return findElement(position, x -> x.getPosition() > position.getPosition());
     }
 
-
+    private ElementSpec findElement(
+            final ElementSpec position,
+            final Predicate<ElementSpec> predicate) {
+        return getElements().stream().filter(predicate).findFirst().orElse(position);
+    }
 
     @Action
     @MemberOrder(name = "elements", sequence = "1")

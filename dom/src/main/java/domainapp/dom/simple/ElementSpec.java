@@ -100,12 +100,12 @@ public class ElementSpec implements Comparable<ElementSpec> {
     @Element(dependent = "false")
     @Collection()
     @Getter @Setter
-    private SortedSet<ProductionStep> steps = new TreeSet<ProductionStep>();
+    private SortedSet<ProductionStepSpec> steps = new TreeSet<ProductionStepSpec>();
 
     @Action
     @MemberOrder(name = "steps", sequence = "1")
     public ElementSpec associateBasicSteps() {
-        final List<ProductionStep> steps = productionStepRepository.findByType(ProductionStepType.BASIC);
+        final List<ProductionStepSpec> steps = productionStepSpecRepository.findByType(ProductionStepType.BASIC);
         getSteps().addAll(steps);
         return this;
     }
@@ -113,13 +113,13 @@ public class ElementSpec implements Comparable<ElementSpec> {
     @Action
     @ActionLayout(named = "Add")
     @MemberOrder(name = "steps", sequence = "2")
-    public ElementSpec addStep(final ProductionStep step) {
+    public ElementSpec addStep(final ProductionStepSpec step) {
         getSteps().add(step);
         return this;
     }
 
-    public List<ProductionStep> choices0AddStep() {
-        final List<ProductionStep> steps = Lists.newArrayList(productionStepRepository.listAll());
+    public List<ProductionStepSpec> choices0AddStep() {
+        final List<ProductionStepSpec> steps = Lists.newArrayList(productionStepSpecRepository.listAll());
         steps.removeAll(getSteps());
         return steps;
     }
@@ -127,23 +127,23 @@ public class ElementSpec implements Comparable<ElementSpec> {
     @Action
     @ActionLayout(named = "Remove")
     @MemberOrder(name = "steps", sequence = "3")
-    public ElementSpec removeStep(final ProductionStep step) {
+    public ElementSpec removeStep(final ProductionStepSpec step) {
         getSteps().add(step);
         return this;
     }
 
-    public List<ProductionStep> choices0RemoveStep() {
+    public List<ProductionStepSpec> choices0RemoveStep() {
         return Lists.newArrayList(getSteps());
     }
 
     @Action()
     public ElementSpec next() {
-        return getSegment().elementAfter(getPosition());
+        return getSegment().elementAfter(this);
     }
 
     @Action()
     public ElementSpec previous() {
-        return getSegment().elementBefore(getPosition());
+        return getSegment().elementBefore(this);
     }
 
     @Column(allowsNull = "true")
@@ -178,7 +178,7 @@ public class ElementSpec implements Comparable<ElementSpec> {
     //endregion
 
     @Inject
-    ProductionStepRepository productionStepRepository;
+    ProductionStepSpecRepository productionStepSpecRepository;
 
 
 }

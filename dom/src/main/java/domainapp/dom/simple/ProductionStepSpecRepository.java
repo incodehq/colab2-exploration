@@ -28,16 +28,16 @@ import org.apache.isis.applib.services.repository.RepositoryService;
 
 @DomainService(
         nature = NatureOfService.DOMAIN,
-        repositoryFor = ProductionStep.class
+        repositoryFor = ProductionStepSpec.class
 )
-public class ProductionStepRepository {
+public class ProductionStepSpecRepository {
 
-    public List<ProductionStep> listAll() {
-        return repositoryService.allInstances(ProductionStep.class);
+    public List<ProductionStepSpec> listAll() {
+        return repositoryService.allInstances(ProductionStepSpec.class);
     }
 
-    public ProductionStep create(final String name, final ProductionStepType type, final int sequence) {
-        final ProductionStep object = new ProductionStep(name, type, sequence);
+    public ProductionStepSpec create(final String name, final ProductionStepType type, final int sequence) {
+        final ProductionStepSpec object = new ProductionStepSpec(name, type, sequence);
         serviceRegistry.injectServicesInto(object);
         repositoryService.persistAndFlush(object);
         return object;
@@ -48,10 +48,10 @@ public class ProductionStepRepository {
     @javax.inject.Inject
     ServiceRegistry2 serviceRegistry;
 
-    public List<ProductionStep> findByType(final ProductionStepType type) {
+    public List<ProductionStepSpec> findByType(final ProductionStepType type) {
         return repositoryService.allMatches(
                 new QueryDefault<>(
-                        ProductionStep.class,
+                        ProductionStepSpec.class,
                         "findByType",
                         "type", type));
     }

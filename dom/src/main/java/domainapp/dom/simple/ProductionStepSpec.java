@@ -49,7 +49,7 @@ import lombok.Setter;
         @javax.jdo.annotations.Query(
                 name = "findByType", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM domainapp.dom.simple.ProductionStep "
+                        + "FROM domainapp.dom.simple.ProductionStepSpec "
                         + "WHERE type == :type ")
 })
 @javax.jdo.annotations.Unique(name="ProductionStep_name_UNQ", members = {"name"})
@@ -57,7 +57,7 @@ import lombok.Setter;
         publishing = Publishing.ENABLED,
         auditing = Auditing.ENABLED
 )
-public class ProductionStep implements Comparable<ProductionStep> {
+public class ProductionStepSpec implements Comparable<ProductionStepSpec> {
 
     //region > title
     public TranslatableString title() {
@@ -66,7 +66,7 @@ public class ProductionStep implements Comparable<ProductionStep> {
     //endregion
 
     //region > constructor
-    public ProductionStep(final String name, final ProductionStepType type, final int sequence) {
+    public ProductionStepSpec(final String name, final ProductionStepType type, final int sequence) {
         setName(name);
         setType(type);
         setSequence(sequence);
@@ -94,7 +94,7 @@ public class ProductionStep implements Comparable<ProductionStep> {
         return ObjectContracts.toString(this, "name", "type", "sequence");
     }
     @Override
-    public int compareTo(final ProductionStep other) {
+    public int compareTo(final ProductionStepSpec other) {
         return ObjectContracts.compare(this, other, "sequence", "name", "type");
     }
 
