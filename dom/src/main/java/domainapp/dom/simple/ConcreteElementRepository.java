@@ -55,4 +55,12 @@ public class ConcreteElementRepository {
     RepositoryService repositoryService;
     @javax.inject.Inject
     ServiceRegistry2 serviceRegistry;
+
+    public ConcreteElement createFor(final ElementSpec spec, final String productionId) {
+        final ConcreteElement element = new ConcreteElement(spec, productionId);
+        serviceRegistry.injectServicesInto(element);
+        repositoryService.persistAndFlush(element);
+        element.addSteps(spec);
+        return element;
+    }
 }

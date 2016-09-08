@@ -14,8 +14,7 @@
                     <bs3:row>
                         <bs3:col span="12">
                             <cpt:fieldSet name="Identifier">
-
-                                <cpt:property id="segment"/>
+                                <cpt:property id="segment" hidden="PARENTED_TABLES"/>
                                 <cpt:property id="position"/>
                             </cpt:fieldSet>
                         </bs3:col>
@@ -33,15 +32,14 @@
                     <bs3:row>
                         <bs3:col span="12">
                             <cpt:fieldSet name="Metadata" id="metadata" unreferencedProperties="false">
-                                <cpt:action id="clearHints"/>
-                                <cpt:action id="downloadLayoutXml"/>
-                                <cpt:action id="downloadJdoMetadata"/>
-                                <cpt:action id="rebuildMetamodel"/>
-                                <cpt:property id="datanucleusVersionLong"/>
-                                <cpt:property id="datanucleusVersionTimestamp"/>
+                                <cpt:action id="clearHints" position="PANEL_DROPDOWN"/>
+                                <cpt:action id="downloadLayoutXml" position="PANEL_DROPDOWN"/>
+                                <cpt:action id="downloadJdoMetadata" position="PANEL_DROPDOWN"/>
+                                <cpt:action id="rebuildMetamodel" position="PANEL_DROPDOWN"/>
                                 <cpt:property id="datanucleusIdLong"/>
+                                <cpt:property id="datanucleusVersionTimestamp"/>
+                                <cpt:property id="datanucleusVersionLong"/>
                             </cpt:fieldSet>
-
                         </bs3:col>
                     </bs3:row>
                 </bs3:tab>
@@ -50,7 +48,11 @@
                 <cpt:property id="specialNotes" hidden="ALL_TABLES"/>
             </cpt:fieldSet>
         </bs3:col>
-        <bs3:col span="6" unreferencedCollections="true"/>
+        <bs3:col span="6" unreferencedCollections="true">
+            <cpt:collection id="steps" defaultView="table">
+                <cpt:named>Planned Steps</cpt:named>
+            </cpt:collection>
+        </bs3:col>
     </bs3:row>
     <bs3:row>
     </bs3:row>

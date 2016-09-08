@@ -18,6 +18,8 @@
  */
 package domainapp.dom.simple;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Predicate;
@@ -27,7 +29,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 
-import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Lists;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.Auditing;
@@ -94,19 +96,26 @@ public class Segment implements Comparable<Segment> {
     private SortedSet<ElementSpec> elements = new TreeSet<>();
 
     @Programmatic
-    public ElementSpec elementBefore(final ElementSpec position) {
-        return findElement(position, x -> x.getPosition() < position.getPosition());
+    public ElementSpec elementBefore(final ElementSpec elementSpec) {
+        return findFirstWithinElse(getElements(), x -> x.getPosition() < elementSpec.getPosition(), elementSpec);
     }
 
     @Programmatic
-    public ElementSpec elementAfter(final ElementSpec position) {
-        return findElement(position, x -> x.getPosition() > position.getPosition());
+    public ElementSpec elementAfter(final ElementSpec elementSpec) {
+        return findFirstWithinElse(reversed(getElements()), x -> x.getPosition() > elementSpec.getPosition(), elementSpec);
     }
 
-    private ElementSpec findElement(
-            final ElementSpec position,
-            final Predicate<ElementSpec> predicate) {
-        return getElements().stream().filter(predicate).findFirst().orElse(position);
+    protected List<ElementSpec> reversed(final SortedSet<ElementSpec> elements1) {
+        final List<ElementSpec> elements = Lists.newArrayList(elements1);
+        Collections.reverse(elements);
+        return elements;
+    }
+
+    protected ElementSpec findFirstWithinElse(
+            final java.util.Collection<ElementSpec> elements,
+            final Predicate<ElementSpec> predicate,
+            final ElementSpec position) {
+        return elements.stream().filter(predicate).findFirst().orElse(position);
     }
 
     @Action

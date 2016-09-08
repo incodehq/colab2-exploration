@@ -18,19 +18,28 @@
  */
 package domainapp.dom.simple;
 
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 
+import com.google.common.collect.Lists;
+
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.Auditing;
 import org.apache.isis.applib.annotation.Collection;
 import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.Publishing;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.i18n.TranslatableString;
 import org.apache.isis.applib.services.message.MessageService;
 import org.apache.isis.applib.services.repository.RepositoryService;
@@ -64,6 +73,7 @@ import lombok.Setter;
 )
 public class ConcreteElement implements Comparable<ConcreteElement> {
 
+
     //region > title
     public TranslatableString title() {
         return TranslatableString.tr("ConcreteElement: {productionId}", "productionId", getProductionId());
@@ -71,8 +81,20 @@ public class ConcreteElement implements Comparable<ConcreteElement> {
     //endregion
 
     //region > constructor
-    public ConcreteElement(final String productionId) {
+    public ConcreteElement(final ElementSpec spec, final String productionId) {
         setProductionId(productionId);
+        setElementSpec(spec);
+    }
+
+    ConcreteElement addSteps(final ElementSpec spec) {
+        final SortedSet<ProductionStepSpec> steps = spec.getSteps();
+        for (ProductionStepSpec stepSpec : steps) {
+            final ProductionStep productionStep = repositoryService.instantiate(ProductionStep.class);
+            productionStep.setSequence(stepSpec.getSequence());
+            productionStep.setSpec(stepSpec);
+            getSteps().add(productionStep);
+        }
+        return this;
     }
     //endregion
 
@@ -89,7 +111,35 @@ public class ConcreteElement implements Comparable<ConcreteElement> {
     @Persistent(mappedBy = "element", dependentElement = "true")
     @Collection()
     @Getter @Setter
-    private SortedSet<ConcreteProductionStep> steps = new TreeSet<ConcreteProductionStep>();
+    private SortedSet<ProductionStep> steps = new TreeSet<ProductionStep>();
+
+
+    @Action(semantics = SemanticsOf.IDEMPOTENT)
+    public ConcreteElement complete(
+            final ProductionStep step,
+            @Parameter(optionality = Optionality.OPTIONAL)
+            @ParameterLayout(named = "Time spent (hours)")
+            final Integer timeSpent,
+            @Parameter(optionality = Optionality.OPTIONAL)
+            @ParameterLayout(named = "Comments", multiLine = 5)
+            final String comments) {
+        step.setStatus(ProductionStepStatus.COMPLETED);
+        step.setTimeSpent(timeSpent);
+        step.setComments(comments);
+        return this;
+    }
+
+    public List<ProductionStep> choices0Complete() {
+        return Lists.newArrayList(
+                getSteps().stream().filter(x -> x.getStatus() != ProductionStepStatus.COMPLETED).collect(Collectors.toList())
+            );
+    }
+
+    public ProductionStep default0Complete() {
+        final List<ProductionStep> choices = choices0Complete();
+        return !choices.isEmpty() ? choices.get(0) : null;
+    }
+    
 
     //region > toString, compareTo
     @Override

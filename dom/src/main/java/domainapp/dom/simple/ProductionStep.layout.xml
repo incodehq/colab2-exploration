@@ -12,6 +12,9 @@
                     <bs3:row>
                         <bs3:col span="12">
                             <cpt:fieldSet name="Identifier">
+                                <cpt:property id="element" hidden="PARENTED_TABLES"/>
+                                <cpt:property id="sequence"/>
+                                <cpt:property id="spec"/>
                             </cpt:fieldSet>
                         </bs3:col>
                     </bs3:row>
@@ -41,6 +44,7 @@
                 </bs3:tab>
             </bs3:tabGroup>
             <cpt:fieldSet name="Details" id="details" unreferencedProperties="false">
+                <cpt:property id="status"/>
             </cpt:fieldSet>
         </bs3:col>
         <bs3:col span="6" unreferencedCollections="true">

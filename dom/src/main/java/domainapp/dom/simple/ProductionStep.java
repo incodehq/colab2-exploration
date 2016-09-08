@@ -25,6 +25,7 @@ import javax.jdo.annotations.VersionStrategy;
 import org.apache.isis.applib.annotation.Auditing;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.services.i18n.TranslatableString;
 import org.apache.isis.applib.services.message.MessageService;
@@ -49,7 +50,7 @@ import lombok.Setter;
 //        @javax.jdo.annotations.Query(
 //                name = "findByType", language = "JDOQL",
 //                value = "SELECT "
-//                        + "FROM domainapp.dom.simple.ConcreteProductionStep "
+//                        + "FROM domainapp.dom.simple.ProductionStep "
 //                        + "WHERE type == :type ")
 })
 @javax.jdo.annotations.Unique(name="ConcreteProductionStep_element_spec_UNQ", members = {"element", "spec"})
@@ -57,20 +58,23 @@ import lombok.Setter;
         publishing = Publishing.ENABLED,
         auditing = Auditing.ENABLED
 )
-public class ConcreteProductionStep implements Comparable<ConcreteProductionStep> {
+public class ProductionStep implements Comparable<ProductionStep> {
 
     //region > title
     public TranslatableString title() {
-        return TranslatableString.tr("{element} {spec}", "element", getElement().getProductionId(), getSpec().getName());
+        return TranslatableString.tr("{element} {spec}", "element", getElement().getProductionId(), "spec", getSpec().getName());
     }
     //endregion
 
     //region > constructor
-    public ConcreteProductionStep(final ConcreteElement element, final ProductionStepSpec spec, final int sequence) {
+    public ProductionStep(final ConcreteElement element, final ProductionStepSpec spec, final int sequence) {
         setElement(element);
         setSpec(spec);
         setSequence(sequence);
+        setStatus(ProductionStepStatus.NOT_STARTED);
     }
+
+    public ProductionStep(){}
     //endregion
 
     @Column(allowsNull = "false")
@@ -88,13 +92,30 @@ public class ConcreteProductionStep implements Comparable<ConcreteProductionStep
     @Getter @Setter
     private int sequence;
 
+    @Column(allowsNull = "false")
+    @Property()
+    @Getter @Setter
+    private ProductionStepStatus status;
+
+    @Column(allowsNull = "true")
+    @Property()
+    @Getter @Setter
+    private Integer timeSpent;
+
+    @Column(allowsNull = "true")
+    @Property()
+    @Getter @Setter
+    @PropertyLayout(multiLine = 5)
+    private String comments;
+
     //region > toString, compareTo
     @Override
     public String toString() {
         return ObjectContracts.toString(this, "element", "spec", "sequence");
     }
+
     @Override
-    public int compareTo(final ConcreteProductionStep other) {
+    public int compareTo(final ProductionStep other) {
         return ObjectContracts.compare(this, other, "element", "spec", "sequence");
     }
 

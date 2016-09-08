@@ -37,6 +37,7 @@ import org.apache.isis.applib.annotation.Auditing;
 import org.apache.isis.applib.annotation.Collection;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.MemberOrder;
+import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Publishing;
@@ -96,11 +97,26 @@ public class ElementSpec implements Comparable<ElementSpec> {
     @Getter @Setter
     private int position;
 
+    @Column(allowsNull = "true")
+    @Property()
+    @PropertyLayout(multiLine = 10)
+    @Getter @Setter
+    private String specialNotes;
+
     @Join
     @Element(dependent = "false")
     @Collection()
     @Getter @Setter
     private SortedSet<ProductionStepSpec> steps = new TreeSet<ProductionStepSpec>();
+
+    @Action
+    public ConcreteElement commission(
+            @ParameterLayout(named = "Production Id")
+            final String productionId) {
+        return concreteElementRepository.createFor(this, productionId);
+    }
+
+    //region > associateBasicSteps
 
     @Action
     @ActionLayout(named = "Basic", describedAs = "Associate basic steps to this element")
@@ -115,6 +131,9 @@ public class ElementSpec implements Comparable<ElementSpec> {
         return !getSteps().isEmpty();
     }
 
+    //endregion
+
+    //region > addStep
     @Action
     @ActionLayout(named = "Add")
     @MemberOrder(name = "steps", sequence = "2")
@@ -129,6 +148,10 @@ public class ElementSpec implements Comparable<ElementSpec> {
         return steps;
     }
 
+    //endregion
+
+    //region > removeStep
+
     @Action
     @ActionLayout(named = "Remove")
     @MemberOrder(name = "steps", sequence = "3")
@@ -141,6 +164,10 @@ public class ElementSpec implements Comparable<ElementSpec> {
         return Lists.newArrayList(getSteps());
     }
 
+    //endregion
+
+    //region > next, previous
+
     @Action()
     public ElementSpec next() {
         return getSegment().elementAfter(this);
@@ -151,11 +178,7 @@ public class ElementSpec implements Comparable<ElementSpec> {
         return getSegment().elementBefore(this);
     }
 
-    @Column(allowsNull = "true")
-    @Property()
-    @PropertyLayout(multiLine = 10)
-    @Getter @Setter
-    private String specialNotes;
+    //endregion
 
     //region > toString, compareTo
     @Override
@@ -184,6 +207,8 @@ public class ElementSpec implements Comparable<ElementSpec> {
 
     @Inject
     ProductionStepSpecRepository productionStepSpecRepository;
+    @Inject
+    ConcreteElementRepository concreteElementRepository;
 
 
 }
