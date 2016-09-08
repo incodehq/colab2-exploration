@@ -1,0 +1,48 @@
+= pp-exploration
+
+:_imagesdir: ./
+
+== Screenshots
+
+The fixture starts off with three example sewer ``Segment``s:
+
+image::https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/010-home-page.png[link="https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/010-home-page.png"]
+
+
+For example, the first sewer `Segment` is set up with a number of (example) ``ElementSpec``s (specifying the plan for the construction of an element of the sewer segment):
+
+image::https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/020-sewer-segment.png[link="https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/020-sewer-segment.png"]
+
+
+The first example `ElementSpec` is set up with a number of ``ProductionStepSpec``s.  These step specs are pre-defined reference data; some are "basic" (likely to be associated with all elements), some are "extra", ie optional:
+
+image::https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/030-element-specification.png[link="https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/030-element-specification.png"]
+
+Additional steps can be added to the specification of the `ElementSpec`:
+
+image::https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/040-add-step.png[link="https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/040-add-step.png"]
+
+Once an element has been fully specified/planned, its construction (as a physical `ConcreteElement`) can be commissioned.  Each such requires a production Id:
+
+image::https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/050-commission.png[link="https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/050-commission.png"]
+
+The resultant `ConcreteElement` refers back to the `ElementSpec` from which it was created, and has corresponding ``ProductionStep``s that relate back to the plan.  These ``ProductionStep``s keep track of their status; initially none is started:
+
+image::https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/060-concrete-element.png[link="https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/060-concrete-element.png"]
+
+We can then create any of these steps.  (In this demo, there are no rules as to the order in which steps are completed):
+
+image::https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/070-complete.png[link="https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/070-complete.png"]
+
+The `ConcreteElement` can used to see the overall status of its steps; we see one of the steps now completed:
+
+image::https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/080-concrete-element-with-step-completed.png[link="https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/080-concrete-element-with-step-completed.png"]
+
+We can continue, completing the second step.  (Note that the first step - previously completed - is no longer shown):
+
+image::https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/090-complete-second-step.png[link="https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/090-complete-second-step.png"]
+
+and so on, and so on:
+
+image::https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/100-concrete-element-with-2-steps-completed.png[link="https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/100-concrete-element-with-2-steps-completed.png"]
+
