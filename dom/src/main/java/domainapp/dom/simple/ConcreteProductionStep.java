@@ -18,16 +18,11 @@
  */
 package domainapp.dom.simple;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 
 import org.apache.isis.applib.annotation.Auditing;
-import org.apache.isis.applib.annotation.Collection;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.Publishing;
@@ -51,55 +46,56 @@ import lombok.Setter;
         strategy= VersionStrategy.DATE_TIME,
         column="version")
 @javax.jdo.annotations.Queries({
-        @javax.jdo.annotations.Query(
-                name = "findByProductionId", language = "JDOQL",
-                value = "SELECT "
-                        + "FROM domainapp.dom.simple.ConcreteElement "
-                        + "WHERE productionId == :productionId ")
+//        @javax.jdo.annotations.Query(
+//                name = "findByType", language = "JDOQL",
+//                value = "SELECT "
+//                        + "FROM domainapp.dom.simple.ConcreteProductionStep "
+//                        + "WHERE type == :type ")
 })
-@javax.jdo.annotations.Unique(name="ConcreteElement_productionId_UNQ", members = {"productionId"})
+@javax.jdo.annotations.Unique(name="ConcreteProductionStep_element_spec_UNQ", members = {"element", "spec"})
 @DomainObject(
         publishing = Publishing.ENABLED,
         auditing = Auditing.ENABLED
 )
-public class ConcreteElement implements Comparable<ConcreteElement> {
+public class ConcreteProductionStep implements Comparable<ConcreteProductionStep> {
 
     //region > title
     public TranslatableString title() {
-        return TranslatableString.tr("ConcreteElement: {productionId}", "productionId", getProductionId());
+        return TranslatableString.tr("{element} {spec}", "element", getElement().getProductionId(), getSpec().getName());
     }
     //endregion
 
     //region > constructor
-    public ConcreteElement(final String productionId) {
-        setProductionId(productionId);
+    public ConcreteProductionStep(final ConcreteElement element, final ProductionStepSpec spec, final int sequence) {
+        setElement(element);
+        setSpec(spec);
+        setSequence(sequence);
     }
     //endregion
 
     @Column(allowsNull = "false")
     @Property()
     @Getter @Setter
-    private String productionId;
+    private ConcreteElement element;
 
-    @Column(allowsNull = "true")
+    @Column(allowsNull = "false")
     @Property()
     @Getter @Setter
-    private ElementSpec elementSpec;
+    private ProductionStepSpec spec;
 
-    @Persistent(mappedBy = "element", dependentElement = "true")
-    @Collection()
+    @Column(allowsNull = "false")
+    @Property()
     @Getter @Setter
-    private SortedSet<ConcreteProductionStep> steps = new TreeSet<ConcreteProductionStep>();
+    private int sequence;
 
     //region > toString, compareTo
     @Override
     public String toString() {
-        return ObjectContracts.toString(this, "productionId");
+        return ObjectContracts.toString(this, "element", "spec", "sequence");
     }
-
     @Override
-    public int compareTo(final ConcreteElement other) {
-        return ObjectContracts.compare(this, other, "productionId");
+    public int compareTo(final ConcreteProductionStep other) {
+        return ObjectContracts.compare(this, other, "element", "spec", "sequence");
     }
 
     //endregion

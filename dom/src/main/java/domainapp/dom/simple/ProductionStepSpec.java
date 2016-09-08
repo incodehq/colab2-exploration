@@ -52,7 +52,7 @@ import lombok.Setter;
                         + "FROM domainapp.dom.simple.ProductionStepSpec "
                         + "WHERE type == :type ")
 })
-@javax.jdo.annotations.Unique(name="ProductionStep_name_UNQ", members = {"name"})
+@javax.jdo.annotations.Unique(name="ProductionStepSpec_name_UNQ", members = {"name"})
 @DomainObject(
         publishing = Publishing.ENABLED,
         auditing = Auditing.ENABLED

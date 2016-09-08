@@ -103,11 +103,16 @@ public class ElementSpec implements Comparable<ElementSpec> {
     private SortedSet<ProductionStepSpec> steps = new TreeSet<ProductionStepSpec>();
 
     @Action
+    @ActionLayout(named = "Basic", describedAs = "Associate basic steps to this element")
     @MemberOrder(name = "steps", sequence = "1")
     public ElementSpec associateBasicSteps() {
         final List<ProductionStepSpec> steps = productionStepSpecRepository.findByType(ProductionStepType.BASIC);
         getSteps().addAll(steps);
         return this;
+    }
+
+    public boolean hideAssociateBasicSteps() {
+        return !getSteps().isEmpty();
     }
 
     @Action
