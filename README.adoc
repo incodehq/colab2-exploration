@@ -30,7 +30,7 @@ The resultant `ConcreteElement` refers back to the `ElementSpec` from which it w
 
 image::https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/060-concrete-element.png[link="https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/060-concrete-element.png"]
 
-We can then create any of these steps.  (In this demo, there are no rules as to the order in which steps are completed):
+We can then complete any of these steps.  (In this demo, there are no rules as to the order in which steps are completed):
 
 image::https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/070-complete.png[link="https://raw.githubusercontent.com/incodehq/pp-exploration/master/images/070-complete.png"]
 
