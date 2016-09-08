@@ -47,10 +47,10 @@ import lombok.Setter;
         column="version")
 @javax.jdo.annotations.Queries({
         @javax.jdo.annotations.Query(
-                name = "findBySegmentId", language = "JDOQL",
+                name = "findByType", language = "JDOQL",
                 value = "SELECT "
                         + "FROM domainapp.dom.simple.ProductionStep "
-                        + "WHERE name == :name ")
+                        + "WHERE type == :type ")
 })
 @javax.jdo.annotations.Unique(name="ProductionStep_name_UNQ", members = {"name"})
 @DomainObject(
@@ -62,13 +62,15 @@ public class ProductionStep implements Comparable<ProductionStep> {
 
     //region > title
     public TranslatableString title() {
-        return TranslatableString.tr("ProductionStep: {name}", "name", getName());
+        return TranslatableString.tr("{name}", "name", getName());
     }
     //endregion
 
     //region > constructor
-    public ProductionStep(final String name) {
+    public ProductionStep(final String name, final ProductionStepType type, final int sequence) {
         setName(name);
+        setType(type);
+        setSequence(sequence);
     }
     //endregion
 
@@ -77,14 +79,24 @@ public class ProductionStep implements Comparable<ProductionStep> {
     @Getter @Setter
     private String name;
 
+    @Column(allowsNull = "false")
+    @Property()
+    @Getter @Setter
+    private ProductionStepType type;
+
+    @Column(allowsNull = "false")
+    @Property()
+    @Getter @Setter
+    private int sequence;
+
     //region > toString, compareTo
     @Override
     public String toString() {
-        return ObjectContracts.toString(this, "name");
+        return ObjectContracts.toString(this, "name", "type", "sequence");
     }
     @Override
     public int compareTo(final ProductionStep other) {
-        return ObjectContracts.compare(this, other, "name");
+        return ObjectContracts.compare(this, other, "sequence", "name", "type");
     }
 
     //endregion

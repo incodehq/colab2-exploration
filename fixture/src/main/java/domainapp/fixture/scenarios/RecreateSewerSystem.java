@@ -19,11 +19,18 @@
 
 package domainapp.fixture.scenarios;
 
+import java.util.List;
+
 import javax.inject.Inject;
+
+import com.google.common.collect.Lists;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
+import domainapp.dom.simple.ElementSpec;
+import domainapp.dom.simple.ProductionStep;
 import domainapp.dom.simple.ProductionStepRepository;
+import domainapp.dom.simple.ProductionStepType;
 import domainapp.dom.simple.Segment;
 import domainapp.dom.simple.SegmentRepository;
 
@@ -41,21 +48,38 @@ public class RecreateSewerSystem extends FixtureScript {
         final Segment highStreetSeg = segmentRepository.create("High Street");
         final Segment railwayRoadSeg = segmentRepository.create("Railway Road");
 
-        createSegments(oxfStreetSeg, 5);
-        createSegments(highStreetSeg, 3);
-        createSegments(railwayRoadSeg, 10);
+        final List<ElementSpec> elementSpecs = createSpecs(oxfStreetSeg, 5);
+        createSpecs(highStreetSeg, 3);
+        createSpecs(railwayRoadSeg, 10);
 
-        productionStepRepository.create("Setup Form");
-        productionStepRepository.create("Reinforcements");
-        productionStepRepository.create("Pour the concrete");
-        productionStepRepository.create("Quality check");
+        int sequence = 0;
+        productionStepRepository.create("Setup Form", ProductionStepType.BASIC, sequence++);
+        productionStepRepository.create("Reinforcements", ProductionStepType.BASIC, sequence++);
+        productionStepRepository.create("Pour the concrete", ProductionStepType.BASIC, sequence++);
+
+        final ProductionStep legStep = productionStepRepository.create("Legs", ProductionStepType.EXTRA, sequence++);
+        final ProductionStep entryPointStep = productionStepRepository.create("Entry point", ProductionStepType.EXTRA,
+                sequence++);
+        final ProductionStep ladderStep = productionStepRepository.create("Ladder", ProductionStepType.EXTRA, sequence++);
+
+        productionStepRepository.create("Quality check", ProductionStepType.BASIC, sequence = 999);
+
+        elementSpecs.get(0).associateBasicSteps();
+        elementSpecs.get(0).associateStep(legStep);
+
+        elementSpecs.get(1).associateBasicSteps();
+
+        elementSpecs.get(1).associateStep(entryPointStep);
+        elementSpecs.get(1).associateStep(ladderStep);
+
 
     }
 
-    private void createSegments(final Segment seg, final int num) {
+    private List<ElementSpec> createSpecs(final Segment seg, final int num) {
         for (int i = 0; i < num; i++) {
             seg.createSpec(i);
         }
+        return Lists.newArrayList(seg.getElements());
     }
 
     @Inject

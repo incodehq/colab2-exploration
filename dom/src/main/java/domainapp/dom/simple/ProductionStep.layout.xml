@@ -12,8 +12,8 @@
                     <bs3:row>
                         <bs3:col span="12">
                             <cpt:fieldSet name="Identifier">
-                                <cpt:property id="segment"/>
-                                <cpt:property id="position"/>
+                                <cpt:property id="name"/>
+                                <cpt:property id="type"/>
                             </cpt:fieldSet>
                         </bs3:col>
                     </bs3:row>
@@ -38,13 +38,12 @@
                                 <cpt:property id="datanucleusVersionTimestamp"/>
                                 <cpt:property id="datanucleusIdLong"/>
                             </cpt:fieldSet>
-
                         </bs3:col>
                     </bs3:row>
                 </bs3:tab>
             </bs3:tabGroup>
-            <cpt:fieldSet name="Details">
-                <cpt:property id="specialNotes" hidden="ALL_TABLES"/>
+            <cpt:fieldSet name="Details" id="details" unreferencedProperties="false">
+                <cpt:property id="sequence"/>
             </cpt:fieldSet>
         </bs3:col>
         <bs3:col span="6" unreferencedCollections="true"/>

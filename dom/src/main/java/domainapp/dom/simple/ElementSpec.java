@@ -18,19 +18,25 @@
  */
 package domainapp.dom.simple;
 
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.inject.Inject;
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Join;
 import javax.jdo.annotations.VersionStrategy;
 
+import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.Auditing;
 import org.apache.isis.applib.annotation.Collection;
 import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.MemberOrder;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.services.i18n.TranslatableString;
 import org.apache.isis.applib.services.message.MessageService;
@@ -67,7 +73,7 @@ public class ElementSpec implements Comparable<ElementSpec> {
 
     //region > title
     public TranslatableString title() {
-        return TranslatableString.tr("Element Spec: {segment} {position}", "segment", getSegment(), "position", getPosition());
+        return TranslatableString.tr("{segment} [{position}]", "segment", getSegment().getSegmentId(), "position", getPosition());
     }
     //endregion
 
@@ -94,6 +100,25 @@ public class ElementSpec implements Comparable<ElementSpec> {
     @Getter @Setter
     private SortedSet<ProductionStep> steps = new TreeSet<ProductionStep>();
 
+    @Programmatic
+    public void associateBasicSteps() {
+        final List<ProductionStep> steps = productionStepRepository.findByType(ProductionStepType.BASIC);
+        getSteps().addAll(steps);
+    }
+
+    @Action
+    @MemberOrder(name = "steps", sequence = "1")
+    public void associateStep(final ProductionStep step) {
+        getSteps().add(step);
+    }
+
+
+    @Column(allowsNull = "true")
+    @Property()
+    @PropertyLayout(multiLine = 10)
+    @Getter @Setter
+    private String specialNotes;
+
     //region > toString, compareTo
     @Override
     public String toString() {
@@ -118,5 +143,8 @@ public class ElementSpec implements Comparable<ElementSpec> {
     MessageService messageService;
 
     //endregion
+
+    @Inject
+    ProductionStepRepository productionStepRepository;
 
 }

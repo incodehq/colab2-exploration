@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
+import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.services.registry.ServiceRegistry2;
 import org.apache.isis.applib.services.repository.RepositoryService;
 
@@ -35,10 +36,10 @@ public class ProductionStepRepository {
         return repositoryService.allInstances(ProductionStep.class);
     }
 
-    public ProductionStep create(final String name) {
-        final ProductionStep object = new ProductionStep(name);
+    public ProductionStep create(final String name, final ProductionStepType type, final int sequence) {
+        final ProductionStep object = new ProductionStep(name, type, sequence);
         serviceRegistry.injectServicesInto(object);
-        repositoryService.persist(object);
+        repositoryService.persistAndFlush(object);
         return object;
     }
 
@@ -46,4 +47,12 @@ public class ProductionStepRepository {
     RepositoryService repositoryService;
     @javax.inject.Inject
     ServiceRegistry2 serviceRegistry;
+
+    public List<ProductionStep> findByType(final ProductionStepType type) {
+        return repositoryService.allMatches(
+                new QueryDefault<>(
+                        ProductionStep.class,
+                        "findByType",
+                        "type", type));
+    }
 }

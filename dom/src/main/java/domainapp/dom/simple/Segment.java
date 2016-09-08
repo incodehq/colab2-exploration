@@ -69,7 +69,7 @@ public class Segment implements Comparable<Segment> {
 
     //region > title
     public TranslatableString title() {
-        return TranslatableString.tr("Segment: {segmentId}", "segmentId", getSegmentId());
+        return TranslatableString.tr("{segmentId}", "segmentId", getSegmentId());
     }
     //endregion
 

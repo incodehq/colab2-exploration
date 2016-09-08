@@ -47,7 +47,7 @@ public class ConcreteElementRepository {
     public Segment create(final String id) {
         final Segment object = new Segment(id);
         serviceRegistry.injectServicesInto(object);
-        repositoryService.persist(object);
+        repositoryService.persistAndFlush(object);
         return object;
     }
 
