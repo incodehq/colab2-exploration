@@ -3,22 +3,49 @@
     <bs3:row>
         <bs3:col span="12" unreferencedActions="true">
             <cpt:domainObject/>
-            <cpt:action id="clearHints"/>
-            <cpt:action id="downloadLayoutXml"/>
-            <cpt:action id="downloadJdoMetadata"/>
-            <cpt:action id="rebuildMetamodel"/>
         </bs3:col>
     </bs3:row>
     <bs3:row>
-        <bs3:col span="4">
-            <cpt:fieldSet name="General" id="general" unreferencedProperties="true">
-                <cpt:property id="datanucleusVersionLong"/>
-                <cpt:property id="segment"/>
-                <cpt:property id="datanucleusVersionTimestamp"/>
-                <cpt:property id="position"/>
-                <cpt:property id="datanucleusIdLong"/>
-            </cpt:fieldSet>
+        <bs3:col span="6">
+            <bs3:tabGroup>
+                <bs3:tab name="Identifier">
+                    <bs3:row>
+                        <bs3:col span="12">
+                            <cpt:fieldSet name="Identifier">
+                                <cpt:property id="segment"/>
+                                <cpt:property id="position"/>
+                            </cpt:fieldSet>
+                        </bs3:col>
+                    </bs3:row>
+                </bs3:tab>
+                <bs3:tab name="Other">
+                    <bs3:row>
+                        <bs3:col span="12">
+                            <cpt:fieldSet name="Other" id="other" unreferencedProperties="true">
+                            </cpt:fieldSet>
+                        </bs3:col>
+                    </bs3:row>
+                </bs3:tab>
+                <bs3:tab name="Metadata">
+                    <bs3:row>
+                        <bs3:col span="12">
+                            <cpt:fieldSet name="Metadata" id="metadata" unreferencedProperties="false">
+                                <cpt:action id="clearHints"/>
+                                <cpt:action id="downloadLayoutXml"/>
+                                <cpt:action id="downloadJdoMetadata"/>
+                                <cpt:action id="rebuildMetamodel"/>
+                                <cpt:property id="datanucleusVersionLong"/>
+                                <cpt:property id="datanucleusVersionTimestamp"/>
+                                <cpt:property id="datanucleusIdLong"/>
+                            </cpt:fieldSet>
+
+                        </bs3:col>
+                    </bs3:row>
+                </bs3:tab>
+            </bs3:tabGroup>
         </bs3:col>
-        <bs3:col span="8" unreferencedCollections="true"/>
+        <bs3:col span="6" unreferencedCollections="true"/>
+    </bs3:row>
+    <bs3:row>
     </bs3:row>
 </bs3:grid>

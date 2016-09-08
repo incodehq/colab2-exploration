@@ -23,6 +23,7 @@ import javax.inject.Inject;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
+import domainapp.dom.simple.ProductionStepRepository;
 import domainapp.dom.simple.Segment;
 import domainapp.dom.simple.SegmentRepository;
 
@@ -44,6 +45,11 @@ public class RecreateSewerSystem extends FixtureScript {
         createSegments(highStreetSeg, 3);
         createSegments(railwayRoadSeg, 10);
 
+        productionStepRepository.create("Setup Form");
+        productionStepRepository.create("Reinforcements");
+        productionStepRepository.create("Pour the concrete");
+        productionStepRepository.create("Quality check");
+
     }
 
     private void createSegments(final Segment seg, final int num) {
@@ -55,5 +61,7 @@ public class RecreateSewerSystem extends FixtureScript {
     @Inject
     SegmentRepository segmentRepository;
 
+    @Inject
+    ProductionStepRepository productionStepRepository;
 
 }

@@ -18,11 +18,17 @@
  */
 package domainapp.dom.simple;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import javax.jdo.annotations.Column;
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.Join;
 import javax.jdo.annotations.VersionStrategy;
 
 import org.apache.isis.applib.annotation.Auditing;
+import org.apache.isis.applib.annotation.Collection;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.Publishing;
@@ -61,7 +67,7 @@ public class ElementSpec implements Comparable<ElementSpec> {
 
     //region > title
     public TranslatableString title() {
-        return TranslatableString.tr("ConcreteElement Spec: {segment} {position}", "segment", getSegment(), "position", getPosition());
+        return TranslatableString.tr("Element Spec: {segment} {position}", "segment", getSegment(), "position", getPosition());
     }
     //endregion
 
@@ -82,6 +88,11 @@ public class ElementSpec implements Comparable<ElementSpec> {
     @Getter @Setter
     private int position;
 
+    @Join
+    @Element(dependent = "false")
+    @Collection()
+    @Getter @Setter
+    private SortedSet<ProductionStep> steps = new TreeSet<ProductionStep>();
 
     //region > toString, compareTo
     @Override

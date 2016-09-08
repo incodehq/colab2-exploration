@@ -27,41 +27,28 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.DomainServiceLayout;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.services.eventbus.ActionDomainEvent;
 
 @DomainService(
         nature = NatureOfService.VIEW_MENU_ONLY
 )
 @DomainServiceLayout(
-        named = "Concrete Elements",
+        named = "Production Steps",
         menuOrder = "20"
 )
-public class ConcreteElementMenu {
+public class ProductionStepMenu {
 
 
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     @MemberOrder(sequence = "1")
-    public List<ConcreteElement> listAll() {
-        return concreteElementRepository.listAll();
+    public List<ProductionStep> listAll() {
+        return productionStepRepository.listAll();
     }
 
-
-
-
-    public static class CreateDomainEvent extends ActionDomainEvent<ConcreteElementMenu> {}
-    @Action(domainEvent = CreateDomainEvent.class)
-    @MemberOrder(sequence = "3")
-    public Segment create(
-            @ParameterLayout(named="Name")
-            final String name) {
-        return concreteElementRepository.create(name);
-    }
 
 
     @javax.inject.Inject
-    ConcreteElementRepository concreteElementRepository;
+    ProductionStepRepository productionStepRepository;
 
 }

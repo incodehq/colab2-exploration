@@ -18,20 +18,12 @@
  */
 package domainapp.dom.simple;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 
-import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.Auditing;
-import org.apache.isis.applib.annotation.Collection;
 import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.Publishing;
 import org.apache.isis.applib.services.i18n.TranslatableString;
@@ -57,57 +49,42 @@ import lombok.Setter;
         @javax.jdo.annotations.Query(
                 name = "findBySegmentId", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM domainapp.dom.simple.Segment "
-                        + "WHERE segmentId == :segmentId ")
+                        + "FROM domainapp.dom.simple.ProductionStep "
+                        + "WHERE name == :name ")
 })
-@javax.jdo.annotations.Unique(name="SewerSegment_segmentId_UNQ", members = {"segmentId"})
+@javax.jdo.annotations.Unique(name="ProductionStep_name_UNQ", members = {"name"})
 @DomainObject(
         publishing = Publishing.ENABLED,
-        auditing = Auditing.ENABLED
+        auditing = Auditing.ENABLED,
+        bounded = true
 )
-public class Segment implements Comparable<Segment> {
+public class ProductionStep implements Comparable<ProductionStep> {
 
     //region > title
     public TranslatableString title() {
-        return TranslatableString.tr("Segment: {segmentId}", "segmentId", getSegmentId());
+        return TranslatableString.tr("ProductionStep: {name}", "name", getName());
     }
     //endregion
 
     //region > constructor
-    public Segment(final String segmentId) {
-        setSegmentId(segmentId);
+    public ProductionStep(final String name) {
+        setName(name);
     }
     //endregion
 
     @Column(allowsNull = "false")
     @Property()
-    @lombok.Getter @lombok.Setter
-    private String segmentId;
-
-    @Persistent(mappedBy = "segment", dependentElement = "false")
-    @Collection()
     @Getter @Setter
-    private SortedSet<ElementSpec> elements = new TreeSet<ElementSpec>();
-
-
-    @Action
-    @MemberOrder(name = "elements", sequence = "1")
-    public Segment createSpec(
-            @ParameterLayout(named = "Position")
-            final int position) {
-        final ElementSpec spec = new ElementSpec(this, position);
-        getElements().add(spec);
-        return this;
-    }
+    private String name;
 
     //region > toString, compareTo
     @Override
     public String toString() {
-        return ObjectContracts.toString(this, "segmentId");
+        return ObjectContracts.toString(this, "name");
     }
     @Override
-    public int compareTo(final Segment other) {
-        return ObjectContracts.compare(this, other, "segmentId");
+    public int compareTo(final ProductionStep other) {
+        return ObjectContracts.compare(this, other, "name");
     }
 
     //endregion
